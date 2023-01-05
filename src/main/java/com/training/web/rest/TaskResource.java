@@ -3,9 +3,6 @@ package com.training.web.rest;
 import com.training.service.TaskService;
 import com.training.service.dto.TaskDTO;
 import com.training.web.rest.errors.BadRequestAlertException;
-import com.training.web.rest.errors.EmailAlreadyUsedException;
-import com.training.web.rest.errors.LoginAlreadyUsedException;
-import com.training.web.rest.vm.TaskStateVM;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
@@ -88,11 +85,11 @@ public class TaskResource {
      * {@code PATCH /tasks/:id} : Change state an existing task.
      *
      * @param id the task to change state.
-     * @param taskStateVM state to change
+     * @param state state to change
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated task.
      */
     @PatchMapping("/{id}")
-    public ResponseEntity<Object> changeState(@PathVariable("id") Long id, @RequestBody TaskStateVM taskStateVM) {
+    public ResponseEntity<Object> changeState(@PathVariable("id") Long id, @RequestBody String state) {
         return null;
     }
 

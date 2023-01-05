@@ -80,4 +80,34 @@ public class Task extends AbstractAuditingEntity<Long>{
     public void setAuthor(User author) {
         this.author = author;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Task task = (Task) o;
+
+        return id != null && id.equals(task.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+            "id=" + id +
+            ", title='" + title + '\'' +
+            ", content='" + content + '\'' +
+            ", state='" + state + '\'' +
+            ", deadline=" + deadline + '\'' +
+            '}';
+    }
 }

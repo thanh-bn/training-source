@@ -5,6 +5,7 @@ import com.training.service.dto.TaskDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,10 +25,10 @@ public class TaskResource {
 
     @GetMapping
     public ResponseEntity<List<TaskDTO>> getAllTasks(
-        @RequestParam("search") String search,
-        @RequestParam("deadline") LocalDateTime deadline,
-        @RequestParam("state") String state,
-        Pageable pageable
+        @RequestParam(value = "search", required = false) String search,
+        @RequestParam(value = "deadline", required = false) LocalDateTime deadline,
+        @RequestParam(value = "state", required = false) String state,
+        @PageableDefault Pageable pageable
     ) {
         return null;
     }

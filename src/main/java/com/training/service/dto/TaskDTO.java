@@ -82,4 +82,16 @@ public class TaskDTO implements Serializable {
     public void setAuthor(UserDTO author) {
         this.author = author;
     }
+
+    @Override
+    public String toString() {
+        return "TaskDTO{" +
+            "id=" + id +
+            ", title='" + title + '\'' +
+            ", content='" + content + '\'' +
+            ", state='" + state + '\'' +
+            ", deadline=" + deadline +
+            ", author=" + author +
+            '}';
+    }
 }

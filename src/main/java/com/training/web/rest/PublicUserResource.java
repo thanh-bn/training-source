@@ -62,16 +62,4 @@ public class PublicUserResource {
     public List<String> getAuthorities() {
         return userService.getAuthorities();
     }
-
-    /**
-     * Gets a list of all task of specific user.
-     *
-     * @param userId "login" user own tasks
-     * @return a string list of all tasks of specific user.
-     */
-    @GetMapping("/users/{userId}/tasks")
-    public ResponseEntity<List<UserDTO>> getTasksOfUser(@PathVariable("userId") Long userId) {
-        return null;
-    }
-
 }

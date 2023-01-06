@@ -360,7 +360,7 @@
                     </dependencies>
                     <configuration>
                         <configLocation>checkstyle.xml</configLocation>
-                        <includes>pom.xml,README.md</includes>
+                        <includes>task,README.md</includes>
                         <excludes>.git/**/*,target/**/*,node_modules/**/*,node/**/*</excludes>
                         <sourceDirectories>./</sourceDirectories>
                     </configuration>

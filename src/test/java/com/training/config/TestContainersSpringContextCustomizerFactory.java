@@ -28,6 +28,7 @@ public class TestContainersSpringContextCustomizerFactory implements ContextCust
             TestPropertyValues testValues = TestPropertyValues.empty();
             EmbeddedSQL sqlAnnotation = AnnotatedElementUtils.findMergedAnnotation(testClass, EmbeddedSQL.class);
             if (null != sqlAnnotation) {
+                log.debug("Hello {}", "xxx");
                 log.debug("detected the EmbeddedSQL annotation on class {}", testClass.getName());
                 log.info("Warming up the sql database");
                 if (

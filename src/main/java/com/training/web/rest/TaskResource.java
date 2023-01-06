@@ -1,24 +1,25 @@
 package com.training.web.rest;
 
 import com.training.domain.Task;
-import com.training.domain.User;
 import com.training.repository.TaskRepository;
 import com.training.service.TaskService;
-import com.training.service.dto.AdminUserDTO;
 import com.training.service.dto.TaskDTO;
 import com.training.web.rest.errors.BadRequestAlertException;
-import com.training.web.rest.errors.EmailAlreadyUsedException;
 import com.training.web.rest.errors.InvalidTaskIdException;
-import com.training.web.rest.errors.LoginAlreadyUsedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import tech.jhipster.web.util.PaginationUtil;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -27,6 +28,15 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * REST controller for managing tasks.
+ * <p>
+ * This class accesses the {@link Task} entity.
+ * <p>
+ * For a normal use-case, it would be better to have an eager relationship between User and Authority,
+ * and send everything to the client side: there would be no View Model and DTO, a lot less code, and an outer-join
+ * which would be good for performance
+ */
 @RestController
 @RequestMapping("/api/tasks")
 public class TaskResource {
@@ -47,7 +57,6 @@ public class TaskResource {
     /**
      * {@code GET /tasks} : get all tasks with all the details - calling this are only allowed for the administrators.
      *
-     * @param search keyword to search for title or content
      * @param deadline deadline to find
      * @param state single state to find
      * @param pageable the pagination information.
@@ -55,12 +64,16 @@ public class TaskResource {
      */
     @GetMapping
     public ResponseEntity<List<TaskDTO>> getAllTasks(
-        @RequestParam(value = "search", required = false) String search,
         @RequestParam(value = "deadline", required = false) LocalDateTime deadline,
         @RequestParam(value = "state", required = false) String state,
         @PageableDefault Pageable pageable
     ) {
-        return null;
+        logger.debug("REST request to get all tasks by current account");
+
+        final Page<TaskDTO> page = this.taskService.getAllCreatedTask(deadline, state, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
     /**
@@ -71,7 +84,9 @@ public class TaskResource {
      */
     @GetMapping("/{id}")
     public ResponseEntity<TaskDTO> getTaskDetails(@PathVariable("id") Long id) {
-        return null;
+        logger.debug("REST request to get task information by id: {}", id);
+
+        return ResponseUtil.wrapOrNotFound(this.taskService.getOneTaskById(id).map(TaskDTO::new));
     }
 
     /**
@@ -151,6 +166,12 @@ public class TaskResource {
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteTask(@PathVariable("id") Long id) {
-        return null;
+        logger.debug("REST request to delete task with id: {}", id);
+
+        this.taskService.deleteTask(id);
+        return ResponseEntity
+            .noContent()
+            .headers(HeaderUtil.createAlert(this.applicationName, "A task is deleted with id: " + id, id.toString()))
+            .build();
     }
 }

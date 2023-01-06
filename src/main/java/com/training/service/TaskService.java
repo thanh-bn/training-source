@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -39,11 +40,11 @@ public class TaskService {
             case 0:
                 return this.taskRepository.findAllByAuthor(currentUser, pageable).map(TaskDTO::new);
             case 1:
-                return this.taskRepository.findAllByAuthorAndDeadline(currentUser, deadline.toInstant(ZoneOffset.UTC), pageable).map(TaskDTO::new);
+                return this.taskRepository.findAllByAuthorAndDeadline(currentUser, Objects.requireNonNull(deadline).toInstant(ZoneOffset.UTC), pageable).map(TaskDTO::new);
             case 2:
-                return this.taskRepository.findAllByAuthorAndState(currentUser, state, pageable).map(TaskDTO::new);
+                return this.taskRepository.findAllByAuthorAndState(currentUser, Objects.requireNonNull(state), pageable).map(TaskDTO::new);
             case 3:
-                return this.taskRepository.findAllByAuthorAndDeadlineAndState(currentUser, deadline.toInstant(ZoneOffset.UTC), state, pageable).map(TaskDTO::new);
+                return this.taskRepository.findAllByAuthorAndDeadlineAndState(currentUser, Objects.requireNonNull(deadline).toInstant(ZoneOffset.UTC), state, pageable).map(TaskDTO::new);
             default:
                 return null;
         }

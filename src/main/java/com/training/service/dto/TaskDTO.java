@@ -1,5 +1,7 @@
 package com.training.service.dto;
 
+import com.training.domain.Task;
+
 import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -11,7 +13,6 @@ public class TaskDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @NotNull
     private Long id;
     @NotBlank
     @Size(min = 1, max = 200)
@@ -33,6 +34,15 @@ public class TaskDTO implements Serializable {
         this.state = state;
         this.deadline = deadline;
         this.author = author;
+    }
+
+    public TaskDTO(Task task) {
+        this.id = task.getId();
+        this.title = task.getTitle();
+        this.content = task.getContent();
+        this.state = task.getState();
+        this.deadline = task.getDeadline();
+        this.author = new UserDTO(task.getAuthor());
     }
 
     public Long getId() {
